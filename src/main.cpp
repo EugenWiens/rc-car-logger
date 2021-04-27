@@ -1,65 +1,26 @@
 #include <Arduino.h>
 #include <TaskScheduler.h>
 
-#include "Logger.hpp"
+#include "DebugOut.hpp"
+#include "ModulesDefines.hpp"
 
+Scheduler scheduler;
 
-class SchedulerContainer {
-public:
-  static Scheduler* getScheduler()
-  {
-    static Scheduler scheduler;
+#if defined(VELOCITY_MEASUREMENT)
+  #include "VelocityMeasurementTask.hpp"
+  VelocityMeasurementTask velocityMeasurementTask(&scheduler);
+#endif
 
-    return &scheduler;
-  }
-};
-
-class Task1 : public Task
-{
-public:
-  Task1()
-  : Task(1000, TASK_FOREVER, SchedulerContainer::getScheduler(), true)
-  {
-    debugLog();
-  }
-
-  virtual bool Callback() override
-  {
-    debugLog() << "test";
-
-    return true;
-  }
-};
-
-class Task2 : public Task
-{
-public:
-  Task2()
-  : Task(2000, TASK_FOREVER, SchedulerContainer::getScheduler(), true)
-  {
-    debugLog();
-
-  }
-
-protected:
-  virtual bool Callback() override
-  {
-    debugLog() << "test2";
-    return true;
-  }
-};
-
-Scheduler *pScheduler = SchedulerContainer::getScheduler();
-
-Task1 t1;
-Task2 t2;
+#if defined(VOLTAGE_MEASUREMENT)
+  #include "VoltageMeasurementTask.hpp"
+  VoltageMeasurementTask voltageMeasurementTask(&scheduler);
+#endif
 
 void setup() {
   Serial.begin(115200);
-
-  Serial.println("setup");
+  debugLog() << "setup";
 }
 
 void loop() {
-  pScheduler->execute();
+  scheduler.execute();
 }

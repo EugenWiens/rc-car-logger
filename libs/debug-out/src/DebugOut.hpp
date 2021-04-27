@@ -2,11 +2,11 @@
 #pragma once
 #include <cstddef>
 
-enum class LogFormat {
+enum class LogFormat
+{
     noFormat,
     hex
 };
-
 
 class LogContext
 {

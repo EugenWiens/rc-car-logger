@@ -1,5 +1,5 @@
 
-#include "Logger.hpp"
+#include "DebugOut.hpp"
 
 #include <Arduino.h>
 #include <string.h>
@@ -66,14 +66,28 @@ LogWrapper& LogWrapper::operator <<(const float number)
     return *this;
 }
 
-char* LogWrapper::getBufferPosition()
+char *LogWrapper::getBufferPosition()
 {
-    return &m_Buffer[m_CurrentPosition];
+  size_t position = m_CurrentPosition;
+
+  if (position > m_BufferSize)
+  {
+    position = m_BufferSize;
+  }
+
+  return &m_Buffer[position];
 }
 
 size_t LogWrapper::getRemainingSize()
 {
-    return m_BufferSize - m_CurrentPosition;
+  size_t remainingSize = 0;
+
+  if (m_BufferSize > m_CurrentPosition)
+  {
+    remainingSize = m_BufferSize - m_CurrentPosition;
+  }
+
+  return remainingSize;
 }
 
 void LogWrapper::clearFormat()
