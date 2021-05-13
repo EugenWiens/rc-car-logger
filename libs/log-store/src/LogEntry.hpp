@@ -1,18 +1,21 @@
 
 #pragma once
 
-#include <string>
+#include <Arduino.h>
 
 
 class LogEntry
 {
 public:
     LogEntry();
-    LogEntry(const float& value);
+    LogEntry(int slotId, const float& value);
 
-    std::string toString();
+    String toString() const;
+    float getValue() const;
+    int getSlotId() const;
 
 private:
+    int m_SlotId;
     unsigned int m_TimeStamp;
     float m_Value;
 };

@@ -5,12 +5,27 @@
 
 
 LogEntry::LogEntry()
-    : m_TimeStamp(0), m_Value()
+    : m_SlotId(-1), m_TimeStamp(0), m_Value()
 {
 }
 
-LogEntry::LogEntry(const float& value)
-    : m_TimeStamp(TimeProvider::getInstance().now()), m_Value()
+LogEntry::LogEntry(int slotId, const float& value)
+    : m_SlotId(slotId), m_TimeStamp(TimeProvider::getInstance().now()), m_Value()
 {
     debugLog() << m_TimeStamp;
+}
+
+String LogEntry::toString() const
+{
+    return String("{ time: ") + m_TimeStamp + String(" value: ") + m_Value + String(" }");
+}
+
+float LogEntry::getValue() const
+{
+    return m_Value;
+}
+
+int LogEntry::getSlotId() const
+{
+    return m_SlotId;
 }
