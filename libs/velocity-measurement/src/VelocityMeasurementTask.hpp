@@ -7,7 +7,7 @@
 class VelocityMeasurementTask : public Task
 {
 public:
-  VelocityMeasurementTask(Scheduler* pScheduler);
+  VelocityMeasurementTask(Scheduler* pScheduler, unsigned long interval);
 
   virtual bool Callback() override;
 };

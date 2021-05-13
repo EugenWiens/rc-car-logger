@@ -8,12 +8,12 @@ Scheduler scheduler;
 
 #if defined(VELOCITY_MEASUREMENT)
   #include "VelocityMeasurementTask.hpp"
-  VelocityMeasurementTask velocityMeasurementTask(&scheduler);
+  VelocityMeasurementTask velocityMeasurementTask(&scheduler, 1000);
 #endif
 
 #if defined(VOLTAGE_MEASUREMENT)
   #include "VoltageMeasurementTask.hpp"
-  VoltageMeasurementTask voltageMeasurementTask(&scheduler);
+  VoltageMeasurementTask voltageMeasurementTask(&scheduler, 1000);
 #endif
 
 void setup() {

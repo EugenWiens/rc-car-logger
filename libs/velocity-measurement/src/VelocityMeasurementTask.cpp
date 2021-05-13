@@ -3,8 +3,8 @@
 #include "DebugOut.hpp"
 
 
-VelocityMeasurementTask::VelocityMeasurementTask(Scheduler* pScheduler)
-    : Task(1000, TASK_FOREVER, pScheduler, true)
+VelocityMeasurementTask::VelocityMeasurementTask(Scheduler* pScheduler, unsigned long interval)
+    : Task(interval, TASK_FOREVER, pScheduler, true)
 {
   debugLog();
 }
