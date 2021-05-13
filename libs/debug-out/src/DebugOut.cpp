@@ -28,11 +28,11 @@ LogWrapper& LogWrapper::operator <<(const int number)
 
     if (m_Format == LogFormat::hex)
     {
-        processed = snprintf(getBufferPosition(), getRemainingSize(), "%#x", number);
+        processed = snprintf(getBufferPosition(), getRemainingSize(), "%#x ", number);
     }
     else
     {
-        processed = snprintf(getBufferPosition(), getRemainingSize(), "%d", number);
+        processed = snprintf(getBufferPosition(), getRemainingSize(), "%d ", number);
     }
 
     m_CurrentPosition += processed;
@@ -41,27 +41,53 @@ LogWrapper& LogWrapper::operator <<(const int number)
     return *this;
 }
 
-LogWrapper& LogWrapper::operator <<(const char* str)
+
+LogWrapper& LogWrapper::operator <<(const unsigned int number)
 {
-    int processed = snprintf(getBufferPosition(), getRemainingSize(), "%s", str);
+    int processed = 0;
+
+    if (m_Format == LogFormat::hex)
+    {
+        processed = snprintf(getBufferPosition(), getRemainingSize(), "%#x ", number);
+    }
+    else
+    {
+        processed = snprintf(getBufferPosition(), getRemainingSize(), "%u ", number);
+    }
+
     m_CurrentPosition += processed;
 
     clearFormat();
+    return *this;
+}
+
+LogWrapper& LogWrapper::operator <<(const float number)
+{
+    int processed = snprintf(getBufferPosition(), getRemainingSize(), "%f ", number);
+    m_CurrentPosition += processed;
+
+    return *this;
+}
+
+LogWrapper& LogWrapper::operator <<(const char* str)
+{
+    int processed = snprintf(getBufferPosition(), getRemainingSize(), "%s ", str);
+    m_CurrentPosition += processed;
+
+    clearFormat();
+    return *this;
+}
+
+LogWrapper& LogWrapper::operator <<(const String& str)
+{
+    *this << str.c_str();
+
     return *this;
 }
 
 LogWrapper& LogWrapper::operator <<(const LogFormat format)
 {
     m_Format = format;
-
-    return *this;
-}
-
-
-LogWrapper& LogWrapper::operator <<(const float number)
-{
-    int processed = snprintf(getBufferPosition(), getRemainingSize(), "%f", number);
-    m_CurrentPosition += processed;
 
     return *this;
 }

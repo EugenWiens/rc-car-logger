@@ -1,6 +1,7 @@
 
 #pragma once
 #include <cstddef>
+#include <Arduino.h>
 
 enum class LogFormat
 {
@@ -36,9 +37,21 @@ public:
     LogWrapper& operator =(const LogWrapper&&) = delete;
 
     LogWrapper& operator <<(const int number);
-    LogWrapper& operator <<(const char* str);
+    LogWrapper& operator <<(const unsigned int number);
     LogWrapper& operator <<(const float number);
+
+    LogWrapper& operator <<(const char* str);
+    LogWrapper& operator <<(const String& str);
+
     LogWrapper& operator <<(const LogFormat format);
+
+    template <typename T>
+    LogWrapper& operator <<(const T& object)
+    {
+        *this << object.toString();
+
+        return *this;
+    }
 
 
 private:
