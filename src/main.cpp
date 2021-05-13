@@ -16,9 +16,20 @@ Scheduler scheduler;
   VoltageMeasurementTask voltageMeasurementTask(&scheduler, 1000);
 #endif
 
+
+#if defined(WEB_UI)
+  #include "WebUiTask.hpp"
+  WebUiTask webUiTask(&scheduler, 1000);
+#endif
+
 void setup() {
   Serial.begin(115200);
   debugLog() << "setup";
+
+
+#if defined(WEB_UI)
+  webUiTask.setup();
+#endif
 }
 
 void loop() {

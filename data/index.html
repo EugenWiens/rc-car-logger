@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>RC Car Logger</title>
+    <meta name="author" content="Eugen Wiens">
+    <style>
+        body {
+            background: #ddd;
+        }
+
+        .header {
+            text-align: center;
+            color: #0081cb;
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        .version {
+            color: #0081cb;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #value-table {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        #value-table .entry {
+            font: 40px Helvetica;
+            background: #00bfa5;
+            border: 5px solid #ddd;
+
+            color: #333;
+            padding: 30px;
+            width: 350px;
+            float: left;
+            position: relative;
+        }
+
+        #value-table h3 {
+            font-size: 60px;
+            font-weight: bold;
+            padding: 20px;
+            margin: -20px -20px 90px -20px;
+            background-color: #0081cb;
+        }
+
+        #value-table h3 span {
+            display: block;
+            font: bold 80px Helvetica;
+            background: #69e2ff;
+            border: 5px solid #00b0ff;
+            height: 140px;
+            width: 300px;
+            margin: 30px auto -65px;
+            border-radius: 20px;
+        }
+
+        #value-table h3 div {
+            font: bold 40px Helvetica;
+            height: 120px;
+            width: 240px;
+            margin: 5px auto -140px;
+        }
+
+        #value-table ul {
+            margin: 20px 0 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #value-table li {
+            border-top: 3px solid #ddd;
+            padding: 20px;
+        }
+
+        .button {
+            background-color: #00b0ff;
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="header">RC Car Logger</h1>
+    <p><a href="/api/data" download="recorded-data.csv"><button class="button">Download recorded data</button></a></p>
+    <div class="version">Version: 1.2.3</div>
+
+    <div id="value-table">
+
+        <div class="entry">
+            <h3>BAC<span>6</span>
+                <div>V</div>
+            </h3>
+            <ul>
+                <li>min: <b>4V</b></li>
+                <li>max: <b>7V</b></li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <h3>Speed<span>35</span>
+                <div>km/h</div>
+            </h3>
+            <ul>
+                <li>min: <b>10 km/h</b></li>
+                <li>max: <b>40 km/h</b></li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <h3>Battery<span>7.4</span>
+                <div>V</div>
+            </h3>
+            <ul>
+                <li>min: <b>4.8 V</b></li>
+                <li>max: <b>8.4 V</b></li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <h3>Current<span>25</span>
+                <div>A</div>
+            </h3>
+            <ul>
+                <li>min: <b>30 A</b></li>
+                <li>max: <b>2 A</b></li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+
+</html>
