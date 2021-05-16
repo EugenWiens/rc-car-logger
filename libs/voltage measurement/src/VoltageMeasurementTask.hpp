@@ -1,17 +1,18 @@
 
 #pragma once
 
-#include <TaskSchedulerDeclarations.h>
+#include "WorkerTask.hpp"
 
 
-class VoltageMeasurementTask : public Task
+class VoltageMeasurementTask : public WorkerTask
 {
 public:
-  VoltageMeasurementTask(Scheduler* pScheduler, unsigned long interval);
+    using WorkerTask::WorkerTask;
 
-  void setup();
-  virtual bool Callback() override;
+    void setup() override;
 
 private:
-  int m_LoggerId;
+    int m_LoggerId;
+
+    void run() override;
 };

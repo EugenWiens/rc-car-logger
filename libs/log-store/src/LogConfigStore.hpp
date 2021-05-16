@@ -21,22 +21,27 @@ public:
         return slot;
     }
 
-    LogConfig getConfig(int slot)
+    LogConfig get(int slotId) const
     {
         LogConfig config;
 
-        if ((slot >= 0) && (slot < m_ConfigArray.size()))
+        if ((slotId >= 0) && (slotId < m_ConfigArray.size()))
         {
-            config = m_ConfigArray[slot];
+            config = m_ConfigArray[slotId];
         }
 
         return config;
     }
 
+    unsigned int size() const
+    {
+        return N;
+    }
+
 private:
     std::array<LogConfig, N> m_ConfigArray;
 
-    int getFreeSlot()
+    int getFreeSlot() const
     {
         int freeSlot = -1;
         for (int index = 0; index < m_ConfigArray.size(); ++index)

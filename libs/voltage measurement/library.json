@@ -2,7 +2,7 @@
   "name": "voltage-measurement",
   "version": "1.0.0",
   "dependencies": {
-    "debug-out": "*",
+    "common": "*",
     "log-store": "*"
   }
 }

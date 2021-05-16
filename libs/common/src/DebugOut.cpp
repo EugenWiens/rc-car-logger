@@ -6,7 +6,7 @@
 
 
 LogWrapper::LogWrapper(const LogContext& context)
-    : m_Context(context), m_CurrentPosition(0)
+    : m_Context(context), m_Buffer{}, m_CurrentPosition(0)
 {
 }
 

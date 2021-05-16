@@ -10,8 +10,10 @@ public:
     LogConfig();
     LogConfig(const String& name, const String& unit);
 
-    bool operator!() const;
+    operator bool() const;
 
+    String getName() const;
+    String getUnit() const;
 
 private:
     bool m_Valid;

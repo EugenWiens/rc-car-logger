@@ -6,15 +6,25 @@
 #include "LogConfig.hpp"
 #include "LogConfigStore.hpp"
 #include "LogDragIndicatorStore.hpp"
+#include "LogDragIndicator.hpp"
 
 
 class DataLogger
 {
 public:
+    struct LogData
+    {
+        LogConfig m_Config;
+        LogDragIndicator m_Indicators;
+    };
+
+    using LogDataArray = std::array<LogData, LOG_CONFIG_STORE_SIZE>;
+
     static DataLogger& getInstance();
 
     void addData(const LogEntry& entry);
     int registerLogConfig(const LogConfig& config);
+    LogDataArray getLogDataArray() const;
 
 private:
     LogStore<LogEntry, LOG_STORE_SIZE> m_Store;

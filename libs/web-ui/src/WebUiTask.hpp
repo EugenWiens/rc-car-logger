@@ -1,21 +1,23 @@
 
 #pragma once
 
-#include <TaskSchedulerDeclarations.h>
+#include "WorkerTask.hpp"
 
 #include <WiFi.h>
 #include <ArduinoHttpServer.h>
 
 
-class WebUiTask : public Task
+class WebUiTask : public WorkerTask
 {
 public:
-  WebUiTask(Scheduler* pScheduler, unsigned long interval);
+  using WorkerTask::WorkerTask;
 
-  void setup();
-  virtual bool Callback() override;
+  void setup() override;
 
 private:
   void handleApiCall(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest);
   void handleFileRequest(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest);
+  String createIndexHtml() const;
+
+  void run() override;
 };

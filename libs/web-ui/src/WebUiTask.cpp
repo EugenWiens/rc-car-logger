@@ -1,116 +1,166 @@
 
 #include "WebUiTask.hpp"
 #include "DebugOut.hpp"
+#include "DataLogger.hpp"
+#include "TimeProvider.hpp"
 
 #include <SPIFFS.h>
 
 const char *ssid = "RC-Car-Logger";
 WiFiServer server(80);
 
-
-WebUiTask::WebUiTask(Scheduler* pScheduler, unsigned long interval)
-    : Task(interval, TASK_FOREVER, pScheduler, true)
+namespace
 {
-  debugLog();
+    String oneEntryTemplate(" \
+  <div class=\"entry\"> \
+    <h3>{{name}}<span>{{value}}</span> \
+        <div>{{unit}}</div> \
+    </h3> \
+    <ul> \
+        <li>min: <b>{{minValue}}{{unit}}</b></li> \
+        <li>max: <b>{{maxValue}}{{unit}}</b></li> \
+    </ul> \
+  </div> \
+");
 }
 
 void WebUiTask::setup()
 {
-  WiFi.softAP(ssid);
-  SPIFFS.begin();
+    WiFi.softAP(ssid);
+    SPIFFS.begin();
 
-  debugLog() << "Setting AP (Access Point)...";
-  WiFi.softAP(ssid);
+    debugLog() << "Setting AP (Access Point)...";
+    WiFi.softAP(ssid);
 
-  IPAddress ipAddress = WiFi.softAPIP();
-  debugLog() << "AP is ready, IP address: " << ipAddress;
+    IPAddress ipAddress = WiFi.softAPIP();
+    debugLog() << "AP is ready, IP address: " << ipAddress;
 
-  server.begin();
+    server.begin();
 }
 
-bool WebUiTask::Callback()
+void WebUiTask::run()
 {
-  WiFiClient client = server.available();
+    WiFiClient client = server.available();
 
-  if (client)
-  {
-    debugLog() << "New Client...";
-    String currentLine = "";
-
-    if (client.connected())
+    if (client)
     {
-      if (client.available())
-      {
-        debugLog() << "...connected";
-        ArduinoHttpServer::StreamHttpRequest<1024> httpRequest(client);
+        debugLog() << "New Client...";
+        String currentLine = "";
 
-        if (httpRequest.readRequest())
+        if (client.connected())
         {
-          debugLog() << httpRequest.getResource();
-          debugLog() << static_cast<int>(httpRequest.getMethod());
-
-          if (httpRequest.getResource()[0] == String("api"))
-          {
-            handleApiCall(client, httpRequest);
-          }
-          else
-          {
-            if (httpRequest.getMethod() == ArduinoHttpServer::Method::Get)
+            if (client.available())
             {
-              handleFileRequest(client, httpRequest);
+                debugLog() << "...connected";
+                ArduinoHttpServer::StreamHttpRequest<1024> httpRequest(client);
+
+                if (httpRequest.readRequest())
+                {
+                    debugLog() << httpRequest.getResource();
+                    debugLog() << static_cast<int>(httpRequest.getMethod());
+
+                    if (httpRequest.getResource()[0] == String("api"))
+                    {
+                        handleApiCall(client, httpRequest);
+                    }
+                    else
+                    {
+                        if (httpRequest.getMethod() == ArduinoHttpServer::Method::Get)
+                        {
+                            handleFileRequest(client, httpRequest);
+                        }
+                    }
+                }
+                else
+                {
+                    ArduinoHttpServer::StreamHttpErrorReply httpReply(client, httpRequest.getContentType());
+
+                    const char *pErrorStr(httpRequest.getError().cStr());
+                    String errorStr(pErrorStr);
+
+                    httpReply.send(errorStr);
+                }
+                client.stop();
             }
-          }
+        }
+    }
+}
+
+void WebUiTask::handleApiCall(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
+{
+    debugLog();
+    debugLog() << httpRequest.getResource();
+}
+
+void WebUiTask::handleFileRequest(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
+{
+    debugLog();
+    String object = httpRequest.getResource().toString();
+
+    if (object == String('/'))
+    {
+        ArduinoHttpServer::StreamHttpReply httpReply(client, httpRequest.getContentType());
+        httpReply.send(createIndexHtml());
+    }
+    else
+    {
+        if (SPIFFS.exists(object))
+        {
+            File fs = SPIFFS.open(object);
+
+            if (fs)
+            {
+                debugLog() << "send page";
+                ArduinoHttpServer::StreamHttpReply httpReply(client, httpRequest.getContentType());
+                httpReply.send(fs.readString());
+                fs.close();
+            }
         }
         else
         {
-          ArduinoHttpServer::StreamHttpErrorReply httpReply(client, httpRequest.getContentType());
+            debugLog() << "send 404";
 
-          const char *pErrorStr(httpRequest.getError().cStr());
-          String errorStr(pErrorStr);
+            ArduinoHttpServer::StreamHttpErrorReply httpReply(client, httpRequest.getContentType(), "404");
+            String errorStr("Not found");
 
-          httpReply.send(errorStr);
+            httpReply.send(errorStr);
         }
-        client.stop();
-      }
     }
-  }
-
-  return true;
 }
 
-
-void WebUiTask::handleApiCall(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
+String WebUiTask::createIndexHtml() const
 {
-  debugLog();
-  debugLog() << httpRequest.getResource();
-}
+    File fs = SPIFFS.open("/index.html");
+    String indexPage;
 
-void WebUiTask::handleFileRequest(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
-{
-  debugLog();
-  String object = httpRequest.getResource().toString();
+    if (fs)
+    {
+        indexPage = fs.readString();
+        String entries;
+        auto dataArray = DataLogger::getInstance().getLogDataArray();
 
-  if (object == String('/'))
-  {
-    object = "/index.html";
-  }
+        for (const DataLogger::LogData &dataElement : dataArray)
+        {
+            if (dataElement.m_Config)
+            {
+                String oneEntry = oneEntryTemplate;
+                oneEntry.replace("{{name}}", dataElement.m_Config.getName());
+                oneEntry.replace("{{unit}}", dataElement.m_Config.getUnit());
+                oneEntry.replace("{{value}}", String(dataElement.m_Indicators.getLast()));
+                oneEntry.replace("{{minValue}}", String(dataElement.m_Indicators.getMin()));
+                oneEntry.replace("{{maxValue}}", String(dataElement.m_Indicators.getMax()));
 
-  File fs = SPIFFS.open(object);
+                entries += oneEntry + "\n";
 
-  if (fs)
-  {
-    debugLog() << "send page";
-    ArduinoHttpServer::StreamHttpReply httpReply(client, httpRequest.getContentType());
-    httpReply.send(fs.readString());
-    fs.close();
-  }
-  else
-  {
-    debugLog() << "send 404";
+                debugLog() << "entry: " << oneEntry;
+            }
+        }
 
-    ArduinoHttpServer::StreamHttpErrorReply httpReply(client, httpRequest.getContentType(), "404");
-    String errorStr("Not found");
+        indexPage.replace("{{version}}", "1.1.a");
+        indexPage.replace("{{last_update}}", TimeProvider::getInstance().nowAsString());
+        indexPage.replace("{{entries}}", entries);
+    }
 
-    httpReply.send(errorStr);
-  }
+    debugLog() << "indexPage" << indexPage;
+    return indexPage;
 }

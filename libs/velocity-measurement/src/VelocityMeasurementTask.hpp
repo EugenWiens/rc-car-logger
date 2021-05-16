@@ -1,13 +1,18 @@
 
 #pragma once
 
-#include <TaskSchedulerDeclarations.h>
+#include "WorkerTask.hpp"
 
 
-class VelocityMeasurementTask : public Task
+class VelocityMeasurementTask : public WorkerTask
 {
 public:
-  VelocityMeasurementTask(Scheduler* pScheduler, unsigned long interval);
+    using WorkerTask::WorkerTask;
 
-  virtual bool Callback() override;
+    void setup() override;
+
+private:
+    int m_LoggerId;
+
+    void run() override;
 };

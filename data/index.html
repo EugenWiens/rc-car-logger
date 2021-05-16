@@ -5,6 +5,15 @@
     <meta charset="utf-8">
     <title>RC Car Logger</title>
     <meta name="author" content="Eugen Wiens">
+
+    <script type = "text/JavaScript">
+        <!--
+           function AutoRefresh( t ) {
+              setTimeout("location.reload(true);", t);
+           }
+        //-->
+    </script>
+
     <style>
         body {
             background: #ddd;
@@ -90,53 +99,13 @@
     </style>
 </head>
 
-<body>
+<body onload = "JavaScript:AutoRefresh(5000);">
     <h1 class="header">RC Car Logger</h1>
     <p><a href="/api/data" download="recorded-data.csv"><button class="button">Download recorded data</button></a></p>
-    <div class="version">Version: 1.2.3</div>
+    <div class="version">Version: {{version}} / Last Update: {{last_update}}</div>
 
     <div id="value-table">
-
-        <div class="entry">
-            <h3>BAC<span>6</span>
-                <div>V</div>
-            </h3>
-            <ul>
-                <li>min: <b>4V</b></li>
-                <li>max: <b>7V</b></li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <h3>Speed<span>35</span>
-                <div>km/h</div>
-            </h3>
-            <ul>
-                <li>min: <b>10 km/h</b></li>
-                <li>max: <b>40 km/h</b></li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <h3>Battery<span>7.4</span>
-                <div>V</div>
-            </h3>
-            <ul>
-                <li>min: <b>4.8 V</b></li>
-                <li>max: <b>8.4 V</b></li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <h3>Current<span>25</span>
-                <div>A</div>
-            </h3>
-            <ul>
-                <li>min: <b>30 A</b></li>
-                <li>max: <b>2 A</b></li>
-            </ul>
-        </div>
-
+    {{entries}}
     </div>
 </body>
 

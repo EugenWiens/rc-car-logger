@@ -1,17 +1,18 @@
 
 #include "VelocityMeasurementTask.hpp"
 #include "DebugOut.hpp"
+#include "LogConfig.hpp"
+#include "DataLogger.hpp"
 
 
-VelocityMeasurementTask::VelocityMeasurementTask(Scheduler* pScheduler, unsigned long interval)
-    : Task(interval, TASK_FOREVER, pScheduler, true)
+void VelocityMeasurementTask::setup()
 {
-  debugLog();
-}
+    LogConfig config("Speed", "km/h");
+    m_LoggerId = DataLogger::getInstance().registerLogConfig(config);
+    debugLog() << "registered config for id" << m_LoggerId;}
 
-bool VelocityMeasurementTask::Callback()
+void VelocityMeasurementTask::run()
 {
-  debugLog() << "test";
-
-  return true;
+    float value = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 10.0;
+    DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
 }

@@ -2,6 +2,7 @@
   "name": "log-store",
   "version": "1.0.0",
   "dependencies" : {
-    "time-provider": "*"
+    "time-provider": "*",
+    "common": "*"
   }
 }

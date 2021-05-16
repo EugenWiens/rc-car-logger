@@ -1,5 +1,10 @@
 {
     "plantuml.diagramsRoot": "doc/diagrams/src",
     "plantuml.exportOutDir": "doc/diagrams/out",
-    "plantuml.exportFormat": "png"
+    "plantuml.exportFormat": "png",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "files.associations": {
+        "limits": "cpp"
+    },
 }

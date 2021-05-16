@@ -12,7 +12,17 @@ LogConfig::LogConfig(const String& name, const String& unit)
 {
 }
 
-bool LogConfig::operator!() const
+LogConfig::operator bool() const
 {
-    return !m_Valid;
+    return m_Valid;
+}
+
+String LogConfig::getName() const
+{
+    return m_Name;
+}
+
+String LogConfig::getUnit() const
+{
+    return m_Unit;
 }

@@ -6,26 +6,15 @@
 #include <cstdlib>
 
 
-VoltageMeasurementTask::VoltageMeasurementTask(Scheduler* pScheduler, unsigned long interval)
-    : Task(interval, TASK_FOREVER, pScheduler, true), m_LoggerId(-1)
-{
-  debugLog();
-}
-
 void VoltageMeasurementTask::setup()
 {
-  LogConfig config("Battery", "V");
-  m_LoggerId = DataLogger::getInstance().registerLogConfig(config);
+    LogConfig config("Battery", "V");
+    m_LoggerId = DataLogger::getInstance().registerLogConfig(config);
+    debugLog() << "registered config for id" << m_LoggerId;
 }
 
-bool VoltageMeasurementTask::Callback()
+void VoltageMeasurementTask::run()
 {
-  debugLog() << "test";
-  float value = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-
-  DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
-
-  return true;
+    float value = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 60.0;
+    DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
 }
-
-
