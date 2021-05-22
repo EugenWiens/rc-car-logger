@@ -20,13 +20,16 @@ def generateDefineFile(env, outputFolder):
 
     with open(os.path.join(outputFolder, 'ModulesDefines.hpp'), 'w') as file:
         for libName in libList:
-            normalizeName =getNormalizeName(libName)
+            normalizeName = getNormalizeName(libName)
             file.write(f'#define {normalizeName}\n')
 
 
 def getNormalizeName(name: str) -> str:
     normalizedString = name.upper()
-    normalizedString = normalizedString.replace('-', '_')
+    normalizedString = normalizedString.split()[0]
+
+    for char in ['-', '/']:
+        normalizedString = normalizedString.replace(char, '_')
 
     return normalizedString
 
