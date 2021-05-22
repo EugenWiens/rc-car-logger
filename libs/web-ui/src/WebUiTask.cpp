@@ -146,9 +146,19 @@ String WebUiTask::createIndexHtml() const
                 String oneEntry = oneEntryTemplate;
                 oneEntry.replace("{{name}}", dataElement.m_Config.getName());
                 oneEntry.replace("{{unit}}", dataElement.m_Config.getUnit());
-                oneEntry.replace("{{value}}", String(dataElement.m_Indicators.getLast()));
-                oneEntry.replace("{{minValue}}", String(dataElement.m_Indicators.getMin()));
-                oneEntry.replace("{{maxValue}}", String(dataElement.m_Indicators.getMax()));
+
+                if (dataElement.m_Indicators)
+                {
+                    oneEntry.replace("{{value}}", String(dataElement.m_Indicators.getLast()));
+                    oneEntry.replace("{{minValue}}", String(dataElement.m_Indicators.getMin()));
+                    oneEntry.replace("{{maxValue}}", String(dataElement.m_Indicators.getMax()));
+                }
+                else
+                {
+                    oneEntry.replace("{{value}}", String("---"));
+                    oneEntry.replace("{{minValue}}", String("---"));
+                    oneEntry.replace("{{maxValue}}", String("---"));
+                }
 
                 entries += oneEntry + "\n";
 
