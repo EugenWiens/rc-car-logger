@@ -4,15 +4,146 @@
 #include "LogConfig.hpp"
 #include "DataLogger.hpp"
 
+#include <Arduino.h>
+
+VelocityMeasurementTask::VelocityMeasurementTask(Scheduler *pScheduler, unsigned long interval)
+    : WorkerTask(pScheduler, interval), m_LoggerIdForSpeed(-1), m_LoggerIdForSatellites(-1)
+{
+    Serial2.begin(9600);
+}
 
 void VelocityMeasurementTask::setup()
 {
-    LogConfig config("Speed", "km/h");
-    m_LoggerId = DataLogger::getInstance().registerLogConfig(config);
-    debugLog() << "registered config for id" << m_LoggerId;}
+    LogConfig configSpeed("Speed", "km/h");
+    m_LoggerIdForSpeed = DataLogger::getInstance().registerLogConfig(configSpeed);
+    debugLog() << "Speed registered config for id" << m_LoggerIdForSpeed;
+
+    LogConfig configSatellite("Satellites", "");
+    m_LoggerIdForSatellites = DataLogger::getInstance().registerLogConfig(configSatellite);
+    debugLog() << "Satellites registered config for id" << m_LoggerIdForSatellites;
+}
 
 void VelocityMeasurementTask::run()
 {
-    float value = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 10.0;
-    DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
+    while (Serial2.available() > 0)
+    {
+        char byte = Serial2.read();
+
+        if (m_Gps.encode(byte))
+        {
+            handleData();
+        }
+    }
+
+    if (millis() > 5000 && m_Gps.charsProcessed() < 10)
+    {
+        debugLog() << "No GPS detected: check wiring.";
+    }
+}
+
+void VelocityMeasurementTask::handleData()
+{
+    debugLog() << "satellites" << m_Gps.satellites.value();
+    debugLog() << static_cast<float>(m_Gps.speed.kmph());
+
+    if (m_Gps.speed.isValid())
+    {
+        float value = static_cast<float>(m_Gps.speed.kmph());
+        debugLog() << "speed" << value;
+        DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSpeed, value));
+    }
+
+    if (m_Gps.satellites.isValid())
+    {
+        if (m_Gps.satellites.isUpdated())
+        {
+            float value = static_cast<float>(m_Gps.satellites.value());
+            DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSatellites, value));
+        }
+    }
+
+    debugLog() << " ";
+    if (m_Gps.time.isValid())
+    {
+        debugLog() << (int)m_Gps.time.minute() << ":" << (int)m_Gps.time.second() << "." << (int)m_Gps.time.centisecond();
+    }
+    else
+    {
+        debugLog() << "INVALID";
+    }
+}
+
+void VelocityMeasurementTask::printData()
+{
+    Serial.print(F("Satellites: "));
+    if (m_Gps.satellites.isValid())
+    {
+        Serial.print(m_Gps.satellites.value());
+    }
+    else
+    {
+        Serial.print(F("INVALID"));
+    }
+
+    Serial.print(F(" Location: "));
+    if (m_Gps.location.isValid())
+    {
+        Serial.print(m_Gps.location.lat(), 6);
+        Serial.print(F(","));
+        Serial.print(m_Gps.location.lng(), 6);
+    }
+    else
+    {
+        Serial.print(F("INVALID"));
+    }
+
+    Serial.print(F("  Date/Time: "));
+    if (m_Gps.date.isValid())
+    {
+        Serial.print(m_Gps.date.month());
+        Serial.print(F("/"));
+        Serial.print(m_Gps.date.day());
+        Serial.print(F("/"));
+        Serial.print(m_Gps.date.year());
+    }
+    else
+    {
+        Serial.print(F("INVALID"));
+    }
+
+    Serial.print(F(" "));
+    if (m_Gps.time.isValid())
+    {
+        if (m_Gps.time.hour() < 10)
+            Serial.print(F("0"));
+        Serial.print(m_Gps.time.hour());
+        Serial.print(F(":"));
+        if (m_Gps.time.minute() < 10)
+            Serial.print(F("0"));
+        Serial.print(m_Gps.time.minute());
+        Serial.print(F(":"));
+        if (m_Gps.time.second() < 10)
+            Serial.print(F("0"));
+        Serial.print(m_Gps.time.second());
+        Serial.print(F("."));
+        if (m_Gps.time.centisecond() < 10)
+            Serial.print(F("0"));
+        Serial.print(m_Gps.time.centisecond());
+    }
+    else
+    {
+        Serial.print(F("INVALID"));
+    }
+
+    Serial.print(F(" Speed: "));
+    if (m_Gps.speed.isValid())
+    {
+        Serial.print(m_Gps.speed.kmph());
+    }
+    else
+    {
+        Serial.print(F("INVALID"));
+    }
+
+    Serial.println();
 }

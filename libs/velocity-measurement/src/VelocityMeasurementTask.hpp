@@ -2,17 +2,24 @@
 #pragma once
 
 #include "WorkerTask.hpp"
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
 
 
 class VelocityMeasurementTask : public WorkerTask
 {
 public:
-    using WorkerTask::WorkerTask;
+    VelocityMeasurementTask(Scheduler *pScheduler, unsigned long interval);
 
     void setup() override;
 
 private:
-    int m_LoggerId;
+    int m_LoggerIdForSpeed;
+    int m_LoggerIdForSatellites;
+    TinyGPSPlus m_Gps;
 
     void run() override;
+
+    void handleData();
+    void printData();
 };
