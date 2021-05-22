@@ -1,21 +1,22 @@
 #pragma once
 
+#include "LogValue.hpp"
+
 class LogDragIndicator
 {
 public:
     LogDragIndicator();
 
-    void set(const float value);
+    void set(const LogValue& value);
 
-    float getLast() const;
-    float getMin() const;
-    float getMax() const;
+    LogValue getLast() const;
+    LogValue getMin() const;
+    LogValue getMax() const;
 
-    operator bool() const;
+    void clear();
 
 private:
-    float m_Min;
-    float m_Max;
-    float m_Last;
-    bool m_Valid;
+    LogValue m_Min;
+    LogValue m_Max;
+    LogValue m_Last;
 };

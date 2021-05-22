@@ -2,21 +2,22 @@
 #pragma once
 
 #include <Arduino.h>
+#include "LogValue.hpp"
 
 
 class LogEntry
 {
 public:
     LogEntry();
-    LogEntry(int slotId, const float& value);
+    LogEntry(int slotId, const LogValue& value);
 
     String toString() const;
-    float getValue() const;
+    LogValue getValue() const;
     int getSlotId() const;
 
 private:
     int m_SlotId;
     unsigned int m_TimeStamp;
-    float m_Value;
+    LogValue m_Value;
 };
 

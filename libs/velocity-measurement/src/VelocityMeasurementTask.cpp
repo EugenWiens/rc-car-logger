@@ -43,33 +43,16 @@ void VelocityMeasurementTask::run()
 
 void VelocityMeasurementTask::handleData()
 {
-    debugLog() << "satellites" << m_Gps.satellites.value();
-    debugLog() << static_cast<float>(m_Gps.speed.kmph());
-
     if (m_Gps.speed.isValid())
     {
-        float value = static_cast<float>(m_Gps.speed.kmph());
-        debugLog() << "speed" << value;
+        LogValue value(static_cast<float>(m_Gps.speed.kmph()));
         DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSpeed, value));
     }
 
     if (m_Gps.satellites.isValid())
     {
-        if (m_Gps.satellites.isUpdated())
-        {
-            float value = static_cast<float>(m_Gps.satellites.value());
-            DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSatellites, value));
-        }
-    }
-
-    debugLog() << " ";
-    if (m_Gps.time.isValid())
-    {
-        debugLog() << (int)m_Gps.time.minute() << ":" << (int)m_Gps.time.second() << "." << (int)m_Gps.time.centisecond();
-    }
-    else
-    {
-        debugLog() << "INVALID";
+        LogValue value(static_cast<int>(m_Gps.satellites.value()));
+        DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSatellites, value));
     }
 }
 

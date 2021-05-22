@@ -12,11 +12,23 @@
               setTimeout("location.reload(true);", t);
            }
         //-->
+
+        <!--
+            function clearDragIndicators() {
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('get', '/api/clear-drag-indicators', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.send();
+            }
+        //-->
+
+</script>
     </script>
 
     <style>
         body {
-            background: #ddd;
+            background: #cccccc;
         }
 
         .header {
@@ -89,7 +101,8 @@
         .button {
             background-color: #00b0ff;
             border: none;
-            padding: 15px 32px;
+            padding: 30px;
+            width: 700px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
@@ -101,7 +114,8 @@
 
 <body onload = "JavaScript:AutoRefresh(5000);">
     <h1 class="header">RC Car Logger</h1>
-    <p><a href="/api/data" download="recorded-data.csv"><button class="button">Download recorded data</button></a></p>
+    <p><a href="/api/data" download="recorded-data.csv"><button class="button">Download Recorded Data</button></a></p>
+    <input type="submit" class="button" onclick="JavaScript:clearDragIndicators();" value="Clear Drag Indicators">
     <div class="version">Version: {{version}} / Last Update: {{last_update}}</div>
 
     <div id="value-table">

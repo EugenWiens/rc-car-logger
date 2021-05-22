@@ -15,6 +15,6 @@ void VoltageMeasurementTask::setup()
 
 void VoltageMeasurementTask::run()
 {
-    float value = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 60.0;
+    LogValue value(static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 60.0f);
     DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
 }

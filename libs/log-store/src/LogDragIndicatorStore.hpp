@@ -4,7 +4,6 @@
 #include <array>
 #include <LogEntry.hpp>
 #include "LogDragIndicator.hpp"
-#include <algorithm>
 
 
 template <size_t N>
@@ -33,6 +32,13 @@ public:
         return values;
     }
 
+    void clearAll()
+    {
+        for (auto& indicator : m_Indicators)
+        {
+            indicator.clear();
+        }
+    }
 private:
     std::array<LogDragIndicator, N> m_Indicators;
 };

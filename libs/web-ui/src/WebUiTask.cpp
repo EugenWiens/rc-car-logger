@@ -44,21 +44,16 @@ void WebUiTask::run()
 
     if (client)
     {
-        debugLog() << "New Client...";
         String currentLine = "";
 
         if (client.connected())
         {
             if (client.available())
             {
-                debugLog() << "...connected";
                 ArduinoHttpServer::StreamHttpRequest<1024> httpRequest(client);
 
                 if (httpRequest.readRequest())
                 {
-                    debugLog() << httpRequest.getResource();
-                    debugLog() << static_cast<int>(httpRequest.getMethod());
-
                     if (httpRequest.getResource()[0] == String("api"))
                     {
                         handleApiCall(client, httpRequest);
@@ -88,13 +83,20 @@ void WebUiTask::run()
 
 void WebUiTask::handleApiCall(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
 {
-    debugLog();
-    debugLog() << httpRequest.getResource();
+    debugLog() << "handleApiCall:"  << httpRequest.getResource();
+    auto& resource = httpRequest.getResource();
+
+    if (resource[0] == String("api"))
+    {
+        if (resource[1] == String("clear-drag-indicators"))
+        {
+            DataLogger::getInstance().clearAllDragIndicators();
+        }
+    }
 }
 
 void WebUiTask::handleFileRequest(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest)
 {
-    debugLog();
     String object = httpRequest.getResource().toString();
 
     if (object == String('/'))
@@ -110,7 +112,6 @@ void WebUiTask::handleFileRequest(WiFiClient &client, const ArduinoHttpServer::S
 
             if (fs)
             {
-                debugLog() << "send page";
                 ArduinoHttpServer::StreamHttpReply httpReply(client, httpRequest.getContentType());
                 httpReply.send(fs.readString());
                 fs.close();
@@ -147,22 +148,11 @@ String WebUiTask::createIndexHtml() const
                 oneEntry.replace("{{name}}", dataElement.m_Config.getName());
                 oneEntry.replace("{{unit}}", dataElement.m_Config.getUnit());
 
-                if (dataElement.m_Indicators)
-                {
-                    oneEntry.replace("{{value}}", String(dataElement.m_Indicators.getLast()));
-                    oneEntry.replace("{{minValue}}", String(dataElement.m_Indicators.getMin()));
-                    oneEntry.replace("{{maxValue}}", String(dataElement.m_Indicators.getMax()));
-                }
-                else
-                {
-                    oneEntry.replace("{{value}}", String("---"));
-                    oneEntry.replace("{{minValue}}", String("---"));
-                    oneEntry.replace("{{maxValue}}", String("---"));
-                }
+                oneEntry.replace("{{value}}", dataElement.m_Indicators.getLast().toString());
+                oneEntry.replace("{{minValue}}", dataElement.m_Indicators.getMin().toString());
+                oneEntry.replace("{{maxValue}}", dataElement.m_Indicators.getMax().toString());
 
                 entries += oneEntry + "\n";
-
-                debugLog() << "entry: " << oneEntry;
             }
         }
 
@@ -171,6 +161,5 @@ String WebUiTask::createIndexHtml() const
         indexPage.replace("{{entries}}", entries);
     }
 
-    debugLog() << "indexPage" << indexPage;
     return indexPage;
 }

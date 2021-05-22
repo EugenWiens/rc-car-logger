@@ -1,38 +1,37 @@
 
 #include "LogDragIndicator.hpp"
-#include <algorithm>
-#include <float.h>
+#include "DebugOut.hpp"
 
 
 LogDragIndicator::LogDragIndicator()
-    : m_Min(FLT_MAX), m_Max(0.0), m_Last(0.0), m_Valid(false)
 {
 }
 
-void LogDragIndicator::set(const float value)
+void LogDragIndicator::set(const LogValue& value)
 {
-    m_Valid = true;
     m_Last = value;
-    m_Min = std::min(m_Min, value);
-    m_Max = std::max(m_Max, value);
+    m_Min = m_Min.min(value);
+    m_Max = m_Max.max(value);
 }
 
-float LogDragIndicator::getLast() const
+LogValue LogDragIndicator::getLast() const
 {
     return m_Last;
 }
 
-float LogDragIndicator::getMin() const
+LogValue LogDragIndicator::getMin() const
 {
     return m_Min;
 }
 
-float LogDragIndicator::getMax() const
+LogValue LogDragIndicator::getMax() const
 {
     return m_Max;
 }
 
-LogDragIndicator::operator bool() const
+void LogDragIndicator::clear()
 {
-    return m_Valid;
+    m_Min = LogValue();
+    m_Max = LogValue();
+    m_Last = LogValue();
 }

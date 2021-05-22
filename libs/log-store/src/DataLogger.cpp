@@ -33,3 +33,8 @@ DataLogger::LogDataArray DataLogger::getLogDataArray() const
 
     return data;
 }
+
+void DataLogger::clearAllDragIndicators()
+{
+    m_DragIndicatorStore.clearAll();
+}

@@ -25,6 +25,7 @@ public:
     void addData(const LogEntry& entry);
     int registerLogConfig(const LogConfig& config);
     LogDataArray getLogDataArray() const;
+    void clearAllDragIndicators();
 
 private:
     LogStore<LogEntry, LOG_STORE_SIZE> m_Store;

@@ -5,6 +5,16 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "files.associations": {
-        "limits": "cpp"
+        "limits": "cpp",
+        "system_error": "cpp",
+        "*.tcc": "cpp",
+        "random": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "tuple": "cpp"
     },
 }

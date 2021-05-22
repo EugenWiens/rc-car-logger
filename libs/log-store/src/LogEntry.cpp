@@ -9,17 +9,17 @@ LogEntry::LogEntry()
 {
 }
 
-LogEntry::LogEntry(int slotId, const float& value)
+LogEntry::LogEntry(int slotId, const LogValue& value)
     : m_SlotId(slotId), m_TimeStamp(TimeProvider::getInstance().now()), m_Value(value)
 {
 }
 
 String LogEntry::toString() const
 {
-    return String("{ slotId: ") + m_SlotId + String(" time: ") + m_TimeStamp + String(" value: ") + m_Value + String(" }");
+    return String("{ slotId: ") + m_SlotId + String(" time: ") + m_TimeStamp + String(" value: ") + m_Value.toString() + String(" }");
 }
 
-float LogEntry::getValue() const
+LogValue LogEntry::getValue() const
 {
     return m_Value;
 }
