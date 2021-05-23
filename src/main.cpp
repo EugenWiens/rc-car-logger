@@ -41,7 +41,7 @@ void
 setup()
 {
     Serial.begin(115200);
-    debugLog() << "setup";
+    debugLog() << "RC-Logger version:" << VERSION_TAG;
 
     for (WorkerTask* pWorker : workers)
     {

@@ -156,7 +156,7 @@ String WebUiTask::createIndexHtml() const
             }
         }
 
-        indexPage.replace("{{version}}", "1.1.a");
+        indexPage.replace("{{version}}", VERSION_TAG);
         indexPage.replace("{{last_update}}", TimeProvider::getInstance().nowAsString());
         indexPage.replace("{{entries}}", entries);
     }
