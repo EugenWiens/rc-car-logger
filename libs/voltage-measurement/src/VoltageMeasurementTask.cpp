@@ -4,17 +4,54 @@
 #include "DataLogger.hpp"
 #include "LogEntry.hpp"
 #include <cstdlib>
+#include <Wire.h>
+#include <INA226.h>
 
+INA226 ina(Wire);
 
 void VoltageMeasurementTask::setup()
 {
-    LogConfig config("Battery", "V");
-    m_LoggerId = DataLogger::getInstance().registerLogConfig(config);
-    debugLog() << "registered config for id" << m_LoggerId;
+    LogConfig configVoltage("Battery", "V");
+    m_LoggerIdForVoltage = DataLogger::getInstance().registerLogConfig(configVoltage);
+    LogConfig configCurrent("Battery", "A");
+    m_LoggerIdForCurrent = DataLogger::getInstance().registerLogConfig(configCurrent);
+
+    debugLog() << "registered config for ids voltage:" << m_LoggerIdForVoltage << "current:" << m_LoggerIdForCurrent;
+
+    debugLog() << ("Initialize INA226");
+    Wire.begin();
+
+    m_SuccessfullyInitialized = ina.begin(0x45); // i2c address is 0x45
+
+    if (m_SuccessfullyInitialized)
+    {
+        ina.configure(INA226_AVERAGES_1, INA226_BUS_CONV_TIME_1100US, INA226_SHUNT_CONV_TIME_1100US, INA226_MODE_SHUNT_BUS_CONT);
+
+        // Calibrate INA226. Rshunt = 0.0005 ohm, Max excepted current = 65A
+        ina.calibrate(0.0005, 65);
+    }
+
+    printIna226Config();
 }
 
 void VoltageMeasurementTask::run()
 {
-    LogValue value(static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 60.0f);
-    DataLogger::getInstance().addData(LogEntry(m_LoggerId, value));
+    LogValue voltageValue(static_cast<float>(ina.readBusVoltage()));
+    DataLogger::getInstance().addData(LogEntry(m_LoggerIdForVoltage, voltageValue));
+
+    LogValue currentValue(static_cast<float>(ina.readShuntCurrent()));
+    DataLogger::getInstance().addData(LogEntry(m_LoggerIdForCurrent, currentValue));
 }
+
+void VoltageMeasurementTask::printIna226Config() const
+{
+    debugLog() << "Mode:" << static_cast<int>(ina.getMode());
+    debugLog() << "Samples average:" << static_cast<int>(ina.getAverages());
+    debugLog() << "Bus conversion time:" << static_cast<int>(ina.getBusConversionTime());
+    debugLog() << "Shunt conversion time:" << static_cast<int>(ina.getShuntConversionTime());
+    debugLog() << "Max possible current:" << ina.getMaxPossibleCurrent() << "A";
+    debugLog() << "Max current:" << ina.getMaxCurrent() << "A";
+    debugLog() << "Max shunt voltage:" << ina.getMaxShuntVoltage() << "V";
+    debugLog() << "Max power:" << ina.getMaxPower() << "W";
+}
+
