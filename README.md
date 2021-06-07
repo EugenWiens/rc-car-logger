@@ -1,3 +1,4 @@
+[![rc car logger ci](https://github.com/EugenWiens/rc-car-logger/actions/workflows/rc-car-logger-ci.yml/badge.svg)](https://github.com/EugenWiens/rc-car-logger/actions/workflows/rc-car-logger-ci.yml)
 
 - [General](#general)
 - [Setup the Development System](#setup-the-development-system)
