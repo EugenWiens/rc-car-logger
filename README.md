@@ -1,4 +1,5 @@
 [![rc car logger ci](https://github.com/EugenWiens/rc-car-logger/actions/workflows/rc-car-logger-ci.yml/badge.svg)](https://github.com/EugenWiens/rc-car-logger/actions/workflows/rc-car-logger-ci.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/eugenwiens/rc-car-logger/badge)](https://www.codefactor.io/repository/github/eugenwiens/rc-car-logger)
 
 - [General](#general)
 - [Setup the Development System](#setup-the-development-system)
