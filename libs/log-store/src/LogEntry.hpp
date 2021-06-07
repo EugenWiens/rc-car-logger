@@ -14,6 +14,7 @@ public:
     String toString() const;
     LogValue getValue() const;
     int getSlotId() const;
+    unsigned int getTimeStamp() const;
 
 private:
     int m_SlotId;
