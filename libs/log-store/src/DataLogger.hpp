@@ -26,6 +26,9 @@ public:
     int registerLogConfig(const LogConfig& config);
     LogDataArray getLogDataArray() const;
     void clearAllDragIndicators();
+    void getExportDataHeader(String& headerData) const;
+    void getExportData(String& data);
+    bool exportDataAvailable() const;
 
 private:
     LogStore<LogEntry, LOG_STORE_SIZE> m_Store;

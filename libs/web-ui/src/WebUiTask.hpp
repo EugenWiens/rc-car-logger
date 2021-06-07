@@ -18,6 +18,7 @@ private:
   void handleApiCall(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest);
   void handleFileRequest(WiFiClient& client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest);
   String createIndexHtml() const;
+  void sendRecordedData(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest) const;
 
   void run() override;
 };

@@ -92,6 +92,10 @@ void WebUiTask::handleApiCall(WiFiClient &client, const ArduinoHttpServer::Strea
         {
             DataLogger::getInstance().clearAllDragIndicators();
         }
+        else if(resource[1] == String("data"))
+        {
+            sendRecordedData(client, httpRequest);
+        }
     }
 }
 
@@ -162,4 +166,17 @@ String WebUiTask::createIndexHtml() const
     }
 
     return indexPage;
+}
+
+void WebUiTask::sendRecordedData(WiFiClient &client, const ArduinoHttpServer::StreamHttpRequest<1024> &httpRequest) const
+{
+    ArduinoHttpServer::StreamHttpReply httpReply(client, "text/csv");
+    String data;
+    DataLogger& dataLogger = DataLogger::getInstance();
+
+    dataLogger.getExportDataHeader(data);
+    data += '\n';
+    dataLogger.getExportData(data);
+
+    httpReply.send(data);
 }

@@ -28,3 +28,8 @@ int LogEntry::getSlotId() const
 {
     return m_SlotId;
 }
+
+unsigned int LogEntry::getTimeStamp() const
+{
+    return m_TimeStamp;
+}

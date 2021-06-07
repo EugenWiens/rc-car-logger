@@ -26,9 +26,8 @@ public:
         return m_Buffer[m_Tail];
     }
 
-    size_t getFillSize()
+    size_t getFillSize() const
     {
-        debugLog() << "size:" << N << "tail:" << m_Tail << "head:" << m_Head;
         size_t fillSize = 0;
 
         if (m_Head == m_Tail)
@@ -68,7 +67,6 @@ private:
         {
             increase(m_Tail);
         }
-
     }
 
     void increase(size_t& position)
