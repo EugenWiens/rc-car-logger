@@ -1,0 +1,12 @@
+{
+  "name": "icon-provider",
+  "version": "1.0.0",
+  "dependencies": {
+    "common": "*"
+  },
+  "build": {
+    "flags": [
+      "-Iicons/"
+    ]
+  }
+}

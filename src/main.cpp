@@ -22,6 +22,11 @@ Scheduler scheduler;
     WebUiTask webUiTask(&scheduler, 1000);
 #endif
 
+#if defined(UI)
+    #include "UiTask.hpp"
+    UiTask UiTask(&scheduler, 250);
+#endif
+
 WorkerTask* workers[] =
 {
 #if defined(VELOCITY_MEASUREMENT)
@@ -35,10 +40,13 @@ WorkerTask* workers[] =
 #if defined(WEB_UI)
     &webUiTask,
 #endif
+
+#if defined(UI)
+    &UiTask,
+#endif
 };
 
-void
-setup()
+void setup()
 {
     Serial.begin(115200);
     debugLog() << "RC-Logger version:" << VERSION_TAG;
