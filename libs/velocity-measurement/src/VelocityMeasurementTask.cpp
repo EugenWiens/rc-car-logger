@@ -37,7 +37,13 @@ void VelocityMeasurementTask::run()
 
     if (millis() > 5000 && m_Gps.charsProcessed() < 10)
     {
-        debugLog() << "No GPS detected: check wiring.";
+        static bool error = false;
+
+        if (error == false)
+        {
+            error = true;
+            debugLog() << "No GPS detected: check wiring.";
+        }
     }
 }
 
