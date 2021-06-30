@@ -11,7 +11,9 @@ public:
         rccar,
         batterie,
         speed,
-        satellite
+        satellite,
+        garbage,
+        checkmark
     };
 
     static const Icon& getIcon(IconType iconType);
