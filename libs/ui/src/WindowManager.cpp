@@ -1,6 +1,12 @@
 
 #include "WindowManager.hpp"
 #include "DataLogger.hpp"
+#include "ClearDragIndicators.hpp"
+
+namespace
+{
+    ClearDragIndicators settingsDialog;
+}
 
 WindowManager::WindowManager(Adafruit_SSD1306 &handler)
     : m_Handler(handler), m_AllMenuDialogArray{}, m_CurrentDialogIndex(0), m_ValideDialogs(0)
@@ -10,6 +16,9 @@ WindowManager::WindowManager(Adafruit_SSD1306 &handler)
 void WindowManager::init()
 {
     addLoggerDialogs();
+
+    settingsDialog.setHandler(&m_Handler);
+    addDialog(settingsDialog);
 }
 
 void WindowManager::handleEvent(const EventManager::UiEvent &event)
@@ -43,23 +52,45 @@ void WindowManager::drawControllArea()
     m_Handler.setTextSize(1);
     m_Handler.setTextColor(WHITE);
     m_Handler.setCursor(0, m_Handler.height() - 8);
-    m_Handler.print(getCurrentDialog().getButtonAString() + " " + getScrollBar() + " " + getCurrentDialog().getButtonBString());
+    m_Handler.print(getCurrentDialog().getButtonAString());
+
+    m_Handler.setCursor(3 * 6, m_Handler.height() - 8);
+    m_Handler.print(getScrollBar());
+
+    m_Handler.setCursor(m_Handler.width() - 3 * 6, m_Handler.height() - 8);
+    m_Handler.print(getCurrentDialog().getButtonBString());
 }
 
 String WindowManager::getScrollBar() const
 {
+    String scrollBar;
+
     const unsigned int elementsOnPage = 4;
-    unsigned int pages = m_ValideDialogs / elementsOnPage;
+    unsigned int elementsOnLastPage = m_ValideDialogs % elementsOnPage;
     unsigned int positionInPage = m_CurrentDialogIndex % elementsOnPage;
-    unsigned int positionOnPage = m_CurrentDialogIndex / elementsOnPage;
-    String scrollBar("----");
+    unsigned int startOfLastPage = m_ValideDialogs - elementsOnLastPage;
+    unsigned int printableElements = 0;
+
+    if (m_CurrentDialogIndex >= startOfLastPage)
+    {
+        printableElements = elementsOnLastPage;
+    }
+    else
+    {
+        printableElements = elementsOnPage;
+    }
+
+    for (int i=0; i < printableElements; ++i)
+    {
+        scrollBar += "-";
+    }
 
     scrollBar[positionInPage] = '=';
 
     return scrollBar;
 }
 
-MenuDialog& WindowManager::getCurrentDialog()
+MenuDialog &WindowManager::getCurrentDialog()
 {
     return *m_AllMenuDialogArray[m_CurrentDialogIndex];
 }
@@ -69,11 +100,11 @@ void WindowManager::increaseDialogIndex()
     m_CurrentDialogIndex = (m_CurrentDialogIndex + 1) % m_ValideDialogs;
 }
 
-void WindowManager::addDialog(MenuDialog& dialog)
+void WindowManager::addDialog(MenuDialog &dialog)
 {
     bool added = false;
 
-    for (auto & pDialog: m_AllMenuDialogArray)
+    for (auto &pDialog : m_AllMenuDialogArray)
     {
         if (pDialog == nullptr)
         {
@@ -99,7 +130,7 @@ void WindowManager::addLoggerDialogs()
 
     for (int indexId = 0; indexId < dataArray.size(); ++indexId)
     {
-        MenuLoggerDialog& dialog = m_MenuLoggerDialogArray[indexId];
+        MenuLoggerDialog &dialog = m_MenuLoggerDialogArray[indexId];
         dialog.setHandler(&m_Handler);
         dialog.setConfigIndex(indexId);
 
@@ -108,4 +139,17 @@ void WindowManager::addLoggerDialogs()
             addDialog(dialog);
         }
     }
+}
+
+unsigned int WindowManager::calculatePages()
+{
+    const unsigned int elementsOnPage = 4;
+    unsigned int pages = m_ValideDialogs / elementsOnPage;
+
+    if (m_ValideDialogs % elementsOnPage)
+    {
+        pages += 1;
+    }
+
+    return pages;
 }

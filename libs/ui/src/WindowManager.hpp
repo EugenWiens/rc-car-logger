@@ -40,4 +40,5 @@ private:
 
     void addDialog(MenuDialog& dialog);
     void addLoggerDialogs();
+    unsigned int calculatePages();
 };
