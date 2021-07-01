@@ -13,5 +13,4 @@ public:
 
 private:
   void run() override;
-
 };

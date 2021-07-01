@@ -17,5 +17,4 @@ private:
     int m_ShowOkCounter;
 
     void drawCheckmark(int x, int y);
-
 };
