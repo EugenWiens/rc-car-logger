@@ -10,6 +10,7 @@
 #include "icons8-speed-30.h"
 #include "icon8-garbage-30.h"
 #include "icon8-ckeckmark-32.h"
+#include "icon8-information-30.h"
 
 
 namespace {
@@ -19,7 +20,8 @@ namespace {
         Icon(bitmap_a5vuxg, A5VUXG_BMPWIDTH, A5VUXG_BMPWIDTH),
         Icon(bitmap_a5t6y8i, A5T6Y8I_BMPWIDTH, A5T6Y8I_BMPWIDTH),
         Icon(bitmap_jtmlzt, JTMLZT_BMPWIDTH, JTMLZT_BMPWIDTH),
-        Icon(bitmap_a41rvv, A41RVV_BMPWIDTH, A41RVV_BMPWIDTH)
+        Icon(bitmap_a41rvv, A41RVV_BMPWIDTH, A41RVV_BMPWIDTH),
+        Icon(bitmap_pgv9fb, PGV9FB_BMPWIDTH, PGV9FB_BMPWIDTH)
     };
 }
 

@@ -87,7 +87,7 @@ String LoggerInfoDialog::getButtonAString() const
 
 String LoggerInfoDialog::getButtonBString() const
 {
-    return String("EX");
+    return getButtonStringExit();
 }
 
 void LoggerInfoDialog::increaseInfoIndex()

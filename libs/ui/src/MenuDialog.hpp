@@ -15,5 +15,10 @@ public:
 
     virtual String getButtonAString() const;
     virtual String getButtonBString() const;
-private:
+
+protected:
+    String getButtonStringNext() const;
+    String getButtonStringEnter() const;
+    String getButtonStringClear() const;
+    String getButtonStringExit() const;
 };

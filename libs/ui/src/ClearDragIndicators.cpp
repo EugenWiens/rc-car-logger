@@ -52,7 +52,7 @@ bool ClearDragIndicators::handleEvent(const EventManager::UiEvent &event)
 
 String ClearDragIndicators::getButtonBString() const
 {
-    return String("DL");
+    return getButtonStringClear();
 }
 
 void ClearDragIndicators::drawCheckmark(int x, int y)

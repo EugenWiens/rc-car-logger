@@ -2,10 +2,13 @@
 #include "WindowManager.hpp"
 #include "DataLogger.hpp"
 #include "ClearDragIndicators.hpp"
+#include "SoftwareVersionDialog.hpp"
+
 
 namespace
 {
     ClearDragIndicators settingsDialog;
+    SoftwareVersionDialog softwareVersionDialog;
 }
 
 WindowManager::WindowManager(Adafruit_SSD1306 &handler)
@@ -19,6 +22,9 @@ void WindowManager::init()
 
     settingsDialog.setHandler(&m_Handler);
     addDialog(settingsDialog);
+
+    softwareVersionDialog.setHandler(&m_Handler);
+    addDialog(softwareVersionDialog);
 }
 
 void WindowManager::handleEvent(const EventManager::UiEvent &event)

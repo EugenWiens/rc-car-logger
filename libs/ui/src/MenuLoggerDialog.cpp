@@ -98,7 +98,7 @@ String MenuLoggerDialog::getButtonBString() const
 
     if (m_ViewMode == ViewMode::menuEntry)
     {
-        buttonBString = String("EN");
+        buttonBString = getButtonStringEnter();
     }
     else
     {

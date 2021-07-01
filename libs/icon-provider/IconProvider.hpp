@@ -13,7 +13,8 @@ public:
         speed,
         satellite,
         garbage,
-        checkmark
+        checkmark,
+        info
     };
 
     static const Icon& getIcon(IconType iconType);
