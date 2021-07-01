@@ -30,6 +30,9 @@ public:
     void getExportData(String& data);
     bool exportDataAvailable() const;
 
+    const LogConfig getLogConfig(int index) const;
+    const LogDragIndicator getLogDragIndicator(int index) const;
+
 private:
     LogStore<LogEntry, LOG_STORE_SIZE> m_Store;
     LogConfigStore<LOG_CONFIG_STORE_SIZE> m_ConfigStore;

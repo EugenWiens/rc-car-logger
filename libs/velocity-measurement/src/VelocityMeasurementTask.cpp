@@ -14,11 +14,11 @@ VelocityMeasurementTask::VelocityMeasurementTask(Scheduler *pScheduler, unsigned
 
 void VelocityMeasurementTask::setup()
 {
-    LogConfig configSpeed("Speed", "km/h");
+    LogConfig configSpeed("Speed", "km/h", IconProvider::IconType::speed);
     m_LoggerIdForSpeed = DataLogger::getInstance().registerLogConfig(configSpeed);
     debugLog() << "Speed registered config for id" << m_LoggerIdForSpeed;
 
-    LogConfig configSatellite("Satellites", "");
+    LogConfig configSatellite("Satellites", "", IconProvider::IconType::satellite);
     m_LoggerIdForSatellites = DataLogger::getInstance().registerLogConfig(configSatellite);
     debugLog() << "Satellites registered config for id" << m_LoggerIdForSatellites;
 }
@@ -37,7 +37,13 @@ void VelocityMeasurementTask::run()
 
     if (millis() > 5000 && m_Gps.charsProcessed() < 10)
     {
-        debugLog() << "No GPS detected: check wiring.";
+        static bool error = false;
+
+        if (error == false)
+        {
+            error = true;
+            debugLog() << "No GPS detected: check wiring.";
+        }
     }
 }
 

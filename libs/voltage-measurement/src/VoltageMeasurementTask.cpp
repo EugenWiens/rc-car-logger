@@ -6,14 +6,16 @@
 #include <cstdlib>
 #include <Wire.h>
 #include <INA226.h>
+#include "IconProvider.hpp"
+
 
 INA226 ina(Wire);
 
 void VoltageMeasurementTask::setup()
 {
-    LogConfig configVoltage("Battery", "V");
+    LogConfig configVoltage("Voltage", "V", IconProvider::IconType::batterie);
     m_LoggerIdForVoltage = DataLogger::getInstance().registerLogConfig(configVoltage);
-    LogConfig configCurrent("Battery", "A");
+    LogConfig configCurrent("Current", "A", IconProvider::IconType::batterie);
     m_LoggerIdForCurrent = DataLogger::getInstance().registerLogConfig(configCurrent);
 
     debugLog() << "registered config for ids voltage:" << m_LoggerIdForVoltage << "current:" << m_LoggerIdForCurrent;
