@@ -9,7 +9,7 @@ class SplashScreen : public UiWidget
 public:
     using UiWidget::UiWidget;
 
-    void show(int x=0, int y=0) override;
+    void draw(int x, int y) override;
 
 private:
     void showText(uint16_t color);

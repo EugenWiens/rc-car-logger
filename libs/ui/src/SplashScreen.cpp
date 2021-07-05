@@ -5,7 +5,7 @@
 #include "Icon.hpp"
 
 
-void SplashScreen::show(int x, int y)
+void SplashScreen::draw(int x, int y)
 {
     if (m_pHandler)
     {

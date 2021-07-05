@@ -25,8 +25,8 @@ void UiTask::setup()
     buttonA.init();
     buttonB.init();
 
-    // SplashScreen splashScreen(handler);
-    // splashScreen.show();
+    SplashScreen splashScreen(&handler);
+    splashScreen.show(0, 0);
 }
 
 void UiTask::run()
