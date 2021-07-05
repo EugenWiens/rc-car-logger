@@ -3,7 +3,6 @@
 
 #include "WorkerTask.hpp"
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
 
 
 class VelocityMeasurementTask : public WorkerTask
