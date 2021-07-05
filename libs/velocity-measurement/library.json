@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "common": "*",
-    "log-store": "*"
+    "log-store": "*",
+    "mikalhart/TinyGPSPlus": "^1.0.2"
   }
 }
