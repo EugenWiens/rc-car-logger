@@ -27,9 +27,6 @@ void Icon::animate(Adafruit_SSD1306* const pHandler, int startX, int y, int endX
     if (pHandler)
     {
         const int delayPart = animationDelay / std::abs(startX - endX);
-        debugLog() << "delayParts:" << delayPart;
-        debugLog() << "startX:" << startX << "endX" << endX << "abs" << std::abs(startX - endX);
-
         int xPosition = startX;
 
         for (; xPosition <= endX; ++xPosition)
