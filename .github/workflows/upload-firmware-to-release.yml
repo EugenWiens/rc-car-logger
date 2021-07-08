@@ -3,7 +3,7 @@ name: upload-firmware-to-release
 on:
   release:
     types: [published]
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,10 +18,17 @@ jobs:
           pip install platformio
       - name: Build with PlatformIO
         run: pio run --environment wemos_d1_mini32
-      - name: Upload Release Asset
+      - name: Build Filesystem Image
+        run: pio run --target buildfs --environment wemos_d1_mini32
+      - name: Upload Firmware Asset
         id: upload-release-asset
         uses: fnkr/github-action-ghr@v1
         env:
           GHR_PATH: ./.pio/build/wemos_d1_mini32/firmware.bin
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+      - name: Upload SPIFF Asset
+        id: upload-release-asset
+        uses: fnkr/github-action-ghr@v1
+        env:
+          GHR_PATH: ./.pio/build/wemos_d1_mini32/spiffs.bin
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

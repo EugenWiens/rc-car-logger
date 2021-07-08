@@ -24,3 +24,5 @@ jobs:
           pip install platformio
       - name: Build with PlatformIO
         run: pio run --environment wemos_d1_mini32
+      - name: Build Filesystem Image
+        run: pio run --target buildfs --environment wemos_d1_mini32

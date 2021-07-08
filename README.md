@@ -92,7 +92,11 @@ The [platformio.ini](platformio.ini) is groped with comments based on the overvi
 
 ## Pictures of the whole system
 ![SYSTEM_OVERVIEW](doc/pictures/rc-car-logger.png)
+
+![SYSTEM_OVERVIEW](doc/pictures/rc-car-logger-with-bn220.png)
+
 ![SYSTEM_OVERVIEW_STACK](doc/pictures/rc-car-logger-stack.png)
+
 ![CONNECTOR](doc/pictures/connector-overview.png)
 
 
