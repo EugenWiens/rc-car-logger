@@ -21,13 +21,13 @@ jobs:
       - name: Build Filesystem Image
         run: pio run --target buildfs --environment wemos_d1_mini32
       - name: Upload Firmware Asset
-        id: upload-release-asset
+        id: upload-firmware-image
         uses: fnkr/github-action-ghr@v1
         env:
           GHR_PATH: ./.pio/build/wemos_d1_mini32/firmware.bin
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload SPIFF Asset
-        id: upload-release-asset
+        id: upload-filesystem-image
         uses: fnkr/github-action-ghr@v1
         env:
           GHR_PATH: ./.pio/build/wemos_d1_mini32/spiffs.bin
