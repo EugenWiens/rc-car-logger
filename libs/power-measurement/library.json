@@ -1,9 +1,9 @@
 {
-  "name": "velocity-measurement",
+  "name": "power-measurement",
   "version": "1.0.0",
   "dependencies": {
     "common": "*",
     "log-store": "*",
-    "mikalhart/TinyGPSPlus": "^1.0.2"
+    "peterus/INA226Lib": "^1.1.3"
   }
 }

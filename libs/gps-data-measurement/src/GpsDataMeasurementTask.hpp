@@ -5,10 +5,10 @@
 #include <TinyGPS++.h>
 
 
-class VelocityMeasurementTask : public WorkerTask
+class GpsDataMeasurementTask : public WorkerTask
 {
 public:
-    VelocityMeasurementTask(Scheduler *pScheduler, unsigned long interval);
+    GpsDataMeasurementTask(Scheduler *pScheduler, unsigned long interval);
 
     void setup() override;
 

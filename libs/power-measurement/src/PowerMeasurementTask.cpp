@@ -1,5 +1,5 @@
 
-#include "VoltageMeasurementTask.hpp"
+#include "PowerMeasurementTask.hpp"
 #include "DebugOut.hpp"
 #include "DataLogger.hpp"
 #include "LogEntry.hpp"
@@ -11,7 +11,7 @@
 
 INA226 ina(Wire);
 
-void VoltageMeasurementTask::setup()
+void PowerMeasurementTask::setup()
 {
     LogConfig configVoltage("Voltage", "V", IconProvider::IconType::batterie);
     m_LoggerIdForVoltage = DataLogger::getInstance().registerLogConfig(configVoltage);
@@ -36,7 +36,7 @@ void VoltageMeasurementTask::setup()
     printIna226Config();
 }
 
-void VoltageMeasurementTask::run()
+void PowerMeasurementTask::run()
 {
     LogValue voltageValue(static_cast<float>(ina.readBusVoltage()));
     DataLogger::getInstance().addData(LogEntry(m_LoggerIdForVoltage, voltageValue));
@@ -45,7 +45,7 @@ void VoltageMeasurementTask::run()
     DataLogger::getInstance().addData(LogEntry(m_LoggerIdForCurrent, currentValue));
 }
 
-void VoltageMeasurementTask::printIna226Config() const
+void PowerMeasurementTask::printIna226Config() const
 {
     debugLog() << "Mode:" << static_cast<int>(ina.getMode());
     debugLog() << "Samples average:" << static_cast<int>(ina.getAverages());

@@ -7,14 +7,14 @@
 
 Scheduler scheduler;
 
-#if defined(VELOCITY_MEASUREMENT)
-    #include "VelocityMeasurementTask.hpp"
-    VelocityMeasurementTask velocityMeasurementTask(&scheduler, 1000);
+#if defined(GPS_DATA_MEASUREMENT)
+    #include "GpsDataMeasurementTask.hpp"
+    GpsDataMeasurementTask gpsDataMeasurementTask(&scheduler, 1000);
 #endif
 
-#if defined(VOLTAGE_MEASUREMENT)
-    #include "VoltageMeasurementTask.hpp"
-    VoltageMeasurementTask voltageMeasurementTask(&scheduler, 1000);
+#if defined(POWER_MEASUREMENT)
+    #include "PowerMeasurementTask.hpp"
+    PowerMeasurementTask powerMeasurementTask(&scheduler, 1000);
 #endif
 
 #if defined(WEB_UI)
@@ -29,12 +29,12 @@ Scheduler scheduler;
 
 WorkerTask* workers[] =
 {
-#if defined(VELOCITY_MEASUREMENT)
-    &velocityMeasurementTask,
+#if defined(GPS_DATA_MEASUREMENT)
+    &gpsDataMeasurementTask,
 #endif
 
-#if defined(VOLTAGE_MEASUREMENT)
-    &voltageMeasurementTask,
+#if defined(POWER_MEASUREMENT)
+    &powerMeasurementTask,
 #endif
 
 #if defined(WEB_UI)

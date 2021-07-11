@@ -7,7 +7,6 @@ LogValue::LogValue()
  {
  }
 
-
 LogValue::LogValue(float value)
     : m_Type(ValueType::floatValue), m_FloatValue(value), m_IntValue(0)
 {

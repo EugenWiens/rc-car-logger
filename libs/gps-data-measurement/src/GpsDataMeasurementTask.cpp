@@ -1,18 +1,18 @@
 
-#include "VelocityMeasurementTask.hpp"
+#include "GpsDataMeasurementTask.hpp"
 #include "DebugOut.hpp"
 #include "LogConfig.hpp"
 #include "DataLogger.hpp"
 
 #include <Arduino.h>
 
-VelocityMeasurementTask::VelocityMeasurementTask(Scheduler *pScheduler, unsigned long interval)
+GpsDataMeasurementTask::GpsDataMeasurementTask(Scheduler *pScheduler, unsigned long interval)
     : WorkerTask(pScheduler, interval), m_LoggerIdForSpeed(-1), m_LoggerIdForSatellites(-1)
 {
     Serial2.begin(9600);
 }
 
-void VelocityMeasurementTask::setup()
+void GpsDataMeasurementTask::setup()
 {
     LogConfig configSpeed("Speed", "km/h", IconProvider::IconType::speed);
     m_LoggerIdForSpeed = DataLogger::getInstance().registerLogConfig(configSpeed);
@@ -23,7 +23,7 @@ void VelocityMeasurementTask::setup()
     debugLog() << "Satellites registered config for id" << m_LoggerIdForSatellites;
 }
 
-void VelocityMeasurementTask::run()
+void GpsDataMeasurementTask::run()
 {
     while (Serial2.available() > 0)
     {
@@ -47,7 +47,7 @@ void VelocityMeasurementTask::run()
     }
 }
 
-void VelocityMeasurementTask::handleData()
+void GpsDataMeasurementTask::handleData()
 {
     if (m_Gps.speed.isValid())
     {
@@ -62,7 +62,7 @@ void VelocityMeasurementTask::handleData()
     }
 }
 
-void VelocityMeasurementTask::printData()
+void GpsDataMeasurementTask::printData()
 {
     Serial.print(F("Satellites: "));
     if (m_Gps.satellites.isValid())

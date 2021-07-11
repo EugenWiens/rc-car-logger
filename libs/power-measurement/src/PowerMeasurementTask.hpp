@@ -4,7 +4,7 @@
 #include "WorkerTask.hpp"
 
 
-class VoltageMeasurementTask : public WorkerTask
+class PowerMeasurementTask : public WorkerTask
 {
 public:
     using WorkerTask::WorkerTask;
