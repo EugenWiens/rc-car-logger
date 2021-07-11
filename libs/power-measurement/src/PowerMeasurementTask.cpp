@@ -29,8 +29,8 @@ void PowerMeasurementTask::setup()
     {
         ina.configure(INA226_AVERAGES_1, INA226_BUS_CONV_TIME_1100US, INA226_SHUNT_CONV_TIME_1100US, INA226_MODE_SHUNT_BUS_CONT);
 
-        // Calibrate INA226. Rshunt = 0.0005 ohm, Max excepted current = 65A
-        ina.calibrate(0.0005, 65);
+        // Calibrate INA226. Rshunt = 0.0005 ohm, Max excepted current = 130A
+        ina.calibrate(0.0005, 130);
     }
 
     printIna226Config();
