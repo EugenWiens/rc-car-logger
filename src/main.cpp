@@ -9,12 +9,12 @@ Scheduler scheduler;
 
 #if defined(GPS_DATA_MEASUREMENT)
     #include "GpsDataMeasurementTask.hpp"
-    GpsDataMeasurementTask gpsDataMeasurementTask(&scheduler, 1000);
+    GpsDataMeasurementTask gpsDataMeasurementTask(&scheduler, 250);
 #endif
 
 #if defined(POWER_MEASUREMENT)
     #include "PowerMeasurementTask.hpp"
-    PowerMeasurementTask powerMeasurementTask(&scheduler, 1000);
+    PowerMeasurementTask powerMeasurementTask(&scheduler, 250);
 #endif
 
 #if defined(WEB_UI)
