@@ -3,7 +3,7 @@
 #include "DataLogger.hpp"
 #include "ClearDragIndicators.hpp"
 #include "SoftwareVersionDialog.hpp"
-
+#include "DebugOut.hpp"
 
 namespace
 {
