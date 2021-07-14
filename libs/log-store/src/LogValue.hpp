@@ -27,6 +27,4 @@ private:
 
     ValueType m_Type;
     float m_FloatValue;
-    int m_IntValue;
-
 };

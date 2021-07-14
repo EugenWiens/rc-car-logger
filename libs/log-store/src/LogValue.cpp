@@ -3,17 +3,17 @@
 
 
 LogValue::LogValue()
-    : m_Type(ValueType::invalid), m_FloatValue(0.0f), m_IntValue(0)
+    : m_Type(ValueType::invalid), m_FloatValue(0.0f)
  {
  }
 
 LogValue::LogValue(float value)
-    : m_Type(ValueType::floatValue), m_FloatValue(value), m_IntValue(0)
+    : m_Type(ValueType::floatValue), m_FloatValue(value)
 {
 }
 
 LogValue::LogValue(int value)
-    : m_Type(ValueType::intValue), m_FloatValue(0.0f), m_IntValue(value)
+    : m_Type(ValueType::intValue), m_FloatValue(static_cast<float>(value))
 {
 }
 
@@ -45,11 +45,7 @@ bool LogValue::operator<(const LogValue& other) const
 {
     bool less = false;
 
-    if (m_Type == ValueType::intValue)
-    {
-        less = m_IntValue <= other.m_IntValue;
-    }
-    else if (m_Type == ValueType::floatValue)
+    if (m_Type != ValueType::invalid)
     {
         less = m_FloatValue <= other.m_FloatValue;
     }
@@ -63,7 +59,7 @@ String LogValue::toString() const
 
     if (m_Type == ValueType::intValue)
     {
-        valueAsString = String(m_IntValue);
+        valueAsString = String(static_cast<int>(m_FloatValue));
     }
     else if (m_Type == ValueType::floatValue)
     {
