@@ -46,6 +46,18 @@ bool SoftwareVersionDialog::handleEvent(const EventManager::UiEvent &event)
     return consumendEvent;
 }
 
+String SoftwareVersionDialog::getButtonAString() const
+{
+    String buttonString;
+
+    if (!m_ShowVersion)
+    {
+        buttonString = MenuDialog::getButtonAString();
+    }
+
+    return buttonString;
+}
+
 String SoftwareVersionDialog::getButtonBString() const
 {
     String buttonString;

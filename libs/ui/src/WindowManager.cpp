@@ -68,8 +68,11 @@ void WindowManager::drawControllArea()
     m_Handler.setCursor(0, m_Handler.height() - 8);
     m_Handler.print(getCurrentDialog().getButtonAString());
 
-    m_Handler.setCursor(3 * 6, m_Handler.height() - 8);
-    m_Handler.print(getScrollBar());
+    if (!getCurrentDialog().getButtonAString().isEmpty())
+    {
+        m_Handler.setCursor(3 * 6, m_Handler.height() - 8);
+        m_Handler.print(getScrollBar());
+    }
 
     m_Handler.setCursor(m_Handler.width() - 3 * 6, m_Handler.height() - 8);
     m_Handler.print(getCurrentDialog().getButtonBString());

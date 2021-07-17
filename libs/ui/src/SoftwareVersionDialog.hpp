@@ -11,6 +11,7 @@ public:
 
     void draw(int x, int y) override;
     bool handleEvent(const EventManager::UiEvent &event) override;
+    String getButtonAString() const override;
     String getButtonBString() const override;
 
 private:

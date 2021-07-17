@@ -47,6 +47,18 @@ bool LogStoreStatusDialog::handleEvent(const EventManager::UiEvent &event)
     return consumendEvent;
 }
 
+String LogStoreStatusDialog::getButtonAString() const
+{
+    String buttonString;
+
+    if (!m_ShowStatus)
+    {
+        buttonString = MenuDialog::getButtonAString();
+    }
+
+    return buttonString;
+}
+
 String LogStoreStatusDialog::getButtonBString() const
 {
     String buttonString;
