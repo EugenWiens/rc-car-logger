@@ -6,7 +6,8 @@
 class SoftwareVersionDialog : public MenuDialog
 {
 public:
-    using MenuDialog::MenuDialog;
+    SoftwareVersionDialog(Adafruit_SSD1306* pHandler);
+    SoftwareVersionDialog();
 
     void draw(int x, int y) override;
     bool handleEvent(const EventManager::UiEvent &event) override;

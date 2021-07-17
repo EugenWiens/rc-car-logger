@@ -3,6 +3,16 @@
 #include "IconProvider.hpp"
 #include "DataLogger.hpp"
 
+SoftwareVersionDialog::SoftwareVersionDialog(Adafruit_SSD1306* pHandler)
+    : MenuDialog(pHandler), m_ShowVersion(false)
+{
+}
+
+SoftwareVersionDialog::SoftwareVersionDialog()
+    : SoftwareVersionDialog(nullptr)
+{
+}
+
 void SoftwareVersionDialog::draw(int x, int y)
 {
     if (m_ShowVersion)
