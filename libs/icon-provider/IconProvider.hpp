@@ -14,7 +14,8 @@ public:
         satellite,
         garbage,
         checkmark,
-        info
+        info,
+        disk
     };
 
     static const Icon& getIcon(IconType iconType);
