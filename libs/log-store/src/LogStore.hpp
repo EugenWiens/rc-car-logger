@@ -11,7 +11,6 @@ public:
     constexpr LogStore()
         : m_Head(0), m_Tail(N-1)
     {
-        static_assert((N > 1) && !(N & (N - 1)), "The size of the LogStore must be a power of two.");
     }
 
     void push(const T& entry)
@@ -24,6 +23,11 @@ public:
     {
         increase(m_Tail);
         return m_Buffer[m_Tail];
+    }
+
+    size_t getMaxSize() const
+    {
+        return N;
     }
 
     size_t getFillSize() const
@@ -72,6 +76,6 @@ private:
     void increase(size_t& position)
     {
         position++;
-        position &= (N-1);
+        position %= N;
     }
 };
