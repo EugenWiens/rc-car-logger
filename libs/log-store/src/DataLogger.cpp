@@ -86,3 +86,9 @@ const LogDragIndicator DataLogger::getLogDragIndicator(int index) const
 {
     return m_DragIndicatorStore.get(index);
 }
+
+void DataLogger::getStoreStatus( size_t& usedEntries, size_t& maxEntries) const
+{
+    usedEntries = m_Store.getFillSize();
+    maxEntries = m_Store.getMaxSize();
+}

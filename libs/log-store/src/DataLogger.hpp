@@ -32,6 +32,7 @@ public:
 
     const LogConfig getLogConfig(int index) const;
     const LogDragIndicator getLogDragIndicator(int index) const;
+    void getStoreStatus( size_t& usedEntries, size_t& maxEntries) const;
 
 private:
     LogStore<LogEntry, LOG_STORE_SIZE> m_Store;
