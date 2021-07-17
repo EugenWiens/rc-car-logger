@@ -160,6 +160,19 @@ String WebUiTask::createIndexHtml() const
             }
         }
 
+        String statusEntry = oneEntryTemplate;
+        size_t usedEntries;
+        size_t maxEntries;
+        DataLogger::getInstance().getStoreStatus(usedEntries, maxEntries);
+        statusEntry.replace("{{name}}", "storage");
+        statusEntry.replace("{{unit}}", "");
+
+        statusEntry.replace("{{value}}", String(usedEntries));
+        statusEntry.replace("{{minValue}}", "");
+        statusEntry.replace("{{maxValue}}", String(maxEntries));
+
+        entries += statusEntry + "\n";
+
         indexPage.replace("{{version}}", VERSION_TAG);
         indexPage.replace("{{last_update}}", TimeProvider::getInstance().nowAsString());
         indexPage.replace("{{entries}}", entries);
