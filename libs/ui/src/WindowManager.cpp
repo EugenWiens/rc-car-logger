@@ -3,12 +3,20 @@
 #include "DataLogger.hpp"
 #include "ClearDragIndicators.hpp"
 #include "SoftwareVersionDialog.hpp"
+#include "LogStoreStatusDialog.hpp"
 #include "DebugOut.hpp"
 
 namespace
 {
     ClearDragIndicators settingsDialog;
     SoftwareVersionDialog softwareVersionDialog;
+    LogStoreStatusDialog logStoreStatusDialog;
+
+    MenuDialog* extraDialogs[WindowManager::m_extraWidgetSize] = {
+        &logStoreStatusDialog,
+        &settingsDialog,
+        &softwareVersionDialog,
+    };
 }
 
 WindowManager::WindowManager(Adafruit_SSD1306 &handler)
@@ -20,11 +28,11 @@ void WindowManager::init()
 {
     addLoggerDialogs();
 
-    settingsDialog.setHandler(&m_Handler);
-    addDialog(settingsDialog);
-
-    softwareVersionDialog.setHandler(&m_Handler);
-    addDialog(softwareVersionDialog);
+    for (auto& dialog : extraDialogs)
+    {
+        dialog->setHandler(&m_Handler);
+        addDialog(*dialog);
+    }
 }
 
 void WindowManager::handleEvent(const EventManager::UiEvent &event)

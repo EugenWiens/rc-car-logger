@@ -13,6 +13,8 @@
 class WindowManager
 {
 public:
+    static constexpr size_t m_extraWidgetSize = 3;
+
     WindowManager(Adafruit_SSD1306& handler);
 
     void init();
@@ -22,7 +24,7 @@ public:
 
 private:
     using MenuLoggerDialogArray = std::array<MenuLoggerDialog, LOG_CONFIG_STORE_SIZE>;
-    using MenuDialogArray = std::array<MenuDialog*, LOG_CONFIG_STORE_SIZE + 1>;
+    using MenuDialogArray = std::array<MenuDialog*, LOG_CONFIG_STORE_SIZE + m_extraWidgetSize>;
 
     Adafruit_SSD1306& m_Handler;
     MenuDialogArray m_AllMenuDialogArray;
