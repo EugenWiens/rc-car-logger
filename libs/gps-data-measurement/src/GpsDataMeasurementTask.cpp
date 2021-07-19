@@ -28,7 +28,6 @@ void GpsDataMeasurementTask::run()
     while (Serial2.available() > 0)
     {
         char byte = Serial2.read();
-
         if (m_Gps.encode(byte))
         {
             handleData();
@@ -51,14 +50,20 @@ void GpsDataMeasurementTask::handleData()
 {
     if (m_Gps.speed.isValid())
     {
-        LogValue value(static_cast<float>(m_Gps.speed.kmph()));
-        DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSpeed, value));
+        if (m_Gps.speed.isUpdated())
+        {
+            LogValue value(static_cast<float>(m_Gps.speed.kmph()));
+            DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSpeed, value));
+        }
     }
 
     if (m_Gps.satellites.isValid())
     {
-        LogValue value(static_cast<int>(m_Gps.satellites.value()));
-        DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSatellites, value));
+        if (m_Gps.satellites.isUpdated())
+        {
+            LogValue value(static_cast<int>(m_Gps.satellites.value()));
+            DataLogger::getInstance().addData(LogEntry(m_LoggerIdForSatellites, value));
+        }
     }
 }
 
