@@ -2,6 +2,11 @@
 #include "DataLogger.hpp"
 #include "DebugOut.hpp"
 
+
+namespace {
+    const String cvsSeperator = ";";
+}
+
 DataLogger &DataLogger::getInstance()
 {
     static DataLogger dataLogger;
@@ -45,7 +50,7 @@ void DataLogger::getExportDataHeader(String &headerData) const
     for (size_t index = 0; index < m_ConfigStore.size(); ++index)
     {
         LogConfig config = m_ConfigStore.get(index);
-        headerData += config.getName() + "[" + config.getUnit() + "],";
+        headerData += config.getName() + "[" + config.getUnit() + "]" + cvsSeperator;
     }
 }
 
@@ -60,7 +65,7 @@ void DataLogger::getExportData(String &data)
 
         for (; index < m_ConfigStore.size(); ++index)
         {
-            data += ",";
+            data += cvsSeperator;
 
             if (index == oneEntry.getSlotId())
             {
